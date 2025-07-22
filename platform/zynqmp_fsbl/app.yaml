@@ -1,0 +1,4 @@
+domain_path: C:\Users\yrosh\Documents\real-fifo\xsa-2107\platform\zynqmp_fsbl\zynqmp_fsbl_bsp
+app_src_dir: C:\Xilinx\2025.1\Vitis\data\embeddedsw\lib\sw_apps\zynqmp_fsbl
+template: zynqmp_fsbl
+lang: c
