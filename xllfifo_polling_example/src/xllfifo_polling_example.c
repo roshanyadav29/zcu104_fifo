@@ -126,21 +126,46 @@ int XLlFifoPollingExample(XLlFifo *InstancePtr, UINTPTR BaseAddress)
 		return XST_FAILURE;
 	}
 
+    /* Print the transmitted buffer */
+    xil_printf("\n\r--- Transmitted Data ---\n\r");
+    for(i = 0; i < MAX_DATA_BUFFER_SIZE; i++) {
+        if(i % 8 == 0) {
+            xil_printf("\n\r[%3d]: ", i);
+        }
+        xil_printf("0x%08x ", *(SourceBuffer + i));
+    }
+    xil_printf("\n\r");
+
+    /* Print the received buffer */
+    xil_printf("\n\r--- Received Data ---\n\r");
+    for(i = 0; i < MAX_DATA_BUFFER_SIZE; i++) {
+        if(i % 8 == 0) {
+            xil_printf("\n\r[%3d]: ", i);
+        }
+        xil_printf("0x%08x ", *(DestinationBuffer + i));
+    }
+    xil_printf("\n\r");
+
 	Error = 0;
 
-	/* Compare the data send with the data received */
-	xil_printf(" Comparing data ...\n\r");
-	for( i=0 ; i<MAX_DATA_BUFFER_SIZE ; i++ ){
-		if ( *(SourceBuffer + i) != *(DestinationBuffer + i) ){
-			Error = 1;
-			break;
-		}
+    /* Compare the data send with the data received */
+    xil_printf(" Comparing data ...\n\r");
+    for( i=0 ; i<MAX_DATA_BUFFER_SIZE ; i++ ){
+        if ( *(SourceBuffer + i) != *(DestinationBuffer + i) ){
+            xil_printf("Data mismatch at index %d: Sent=0x%08x, Received=0x%08x\n\r", 
+                   i, *(SourceBuffer + i), *(DestinationBuffer + i));
+            Error = 1;
+            break;
+        }
 
-	}
+    }
 
-	if (Error != 0){
-		return XST_FAILURE;
-	}
+    if (Error != 0){
+        xil_printf("Data comparison FAILED\n\r");
+        return XST_FAILURE;
+    } else {
+        xil_printf("Data comparison PASSED - All %d words match!\n\r", MAX_DATA_BUFFER_SIZE);
+    }
 
 	return Status;
 }
